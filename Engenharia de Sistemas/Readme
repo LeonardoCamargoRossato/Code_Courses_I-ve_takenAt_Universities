@@ -1,0 +1,72 @@
+# Descrição dos códigos
+
+Este repositório contém os scripts utilizados no Trabalho 3 da disciplina Engenharia de Sistemas, cujo objetivo foi analisar um controlador PI por meio de varredura paramétrica dos ganhos `Kp` e `Ki`, cálculo de indicadores de desempenho, filtragem multicritério, coordenadas paralelas e validação pelo critério de Kreisselmeier-Steinhäuser (KS).
+
+## Arquivos MATLAB
+
+### `var_analise.m`
+Função base fornecida/adaptada para calcular os quatro indicadores principais de desempenho de um par de ganhos `[Kp, Ki]`: tempo de subida, overshoot, undershoot e erro de regime para entrada rampa. É usada como função auxiliar em algumas etapas iniciais do trabalho.
+
+### `calcula_indicadores.m`
+Função que recebe valores arbitrários de `Kp` e `Ki` e retorna uma tabela com os indicadores de desempenho calculados. Também verifica se o par está dentro da região admissível de estabilidade.
+
+### `main_trab3.m`
+Script principal inicial do trabalho. Realiza uma varredura de pares `Kp` e `Ki`, calcula os indicadores, aplica uma métrica agregada do tipo KS, seleciona uma melhor solução e gera gráficos da resposta ao degrau, resposta à rampa e mapa de soluções.
+
+### `plot_Ki_max.m`
+Gera o gráfico do limite superior de `Ki` em função de `Kp`, usando a expressão de estabilidade do enunciado. Também salva os dados calculados em CSV e o gráfico em PNG/FIG.
+
+### `gerar_tabela_por_Ki.m`
+Função exploratória que fixa um valor de `Ki` escolhido pelo usuário e varia `Kp`, gerando uma tabela com os indicadores para cada par. Foi usada para entender o comportamento do sistema antes da varredura completa.
+
+### `gera_tabela_deIndicadores_total_e_filtrada.m`
+Gera a tabela completa de resultados para uma malha de valores de `Kp` e `Ki`. Depois aplica filtros de desempenho, removendo soluções instáveis, com `NaN` ou fora dos limites definidos, gerando a tabela filtrada usada nas análises finais.
+
+### `plot_coordenadas_paralelas.m`
+Lê a tabela filtrada e gera um gráfico de coordenadas paralelas no MATLAB, comparando os quatro indicadores: tempo de subida, overshoot, undershoot e erro de rampa. Também salva a tabela usada no gráfico.
+
+### `plot_tradeoff_final.m`
+Gera os gráficos finais de resposta ao degrau unitário e resposta à entrada rampa para os três pares selecionados no trade-off final: `(Kp=0.1, Ki=0.6)`, `(Kp=0.2, Ki=0.6)` e `(Kp=0.3, Ki=0.6)`. As cores são mantidas iguais nos dois gráficos para facilitar a comparação.
+
+### `criterio_KS_tradeoff.m`
+Aplica o critério de Kreisselmeier-Steinhäuser (KS) sobre os indicadores normalizados pelos limites de projeto. O script ranqueia as soluções, gera o Top 20 pelo critério KS e compara quantitativamente os três pares finais escolhidos pela análise visual.
+
+## Relatórios
+
+### `Trabalho3_EngenhariaSistemas_ABNT.pdf`
+Versão formatada em estilo acadêmico/ABNT, com seções, figuras, tabelas, conclusão e referências.
+
+### `Trabalho3_EngSistemas__LeonardoRossato.pdf`
+Versão final do trabalho com apresentação dos resultados, metodologia, gráficos, tabelas filtradas, coordenadas paralelas e validação pelo critério KS.
+
+## Observação
+
+Os códigos MATLAB dependem principalmente do **Control System Toolbox**, pois utilizam funções como `ss`, `tf`, `feedback`, `step` e `lsim`. Para coordenadas paralelas em MATLAB, pode ser necessário o **Statistics and Machine Learning Toolbox**. Parte da análise visual final também foi realizada em Python com Plotly, a partir dos arquivos CSV gerados pelos scripts MATLAB.
+
+## Parte Python / Plotly
+
+A etapa em Python foi utilizada para complementar as análises feitas no MATLAB, principalmente na visualização interativa das soluções candidatas por coordenadas paralelas. Os scripts leem o arquivo `dados_usados_coordenadas_paralelas.csv`, que contém os pares `(Kp, Ki)` e os quatro indicadores de desempenho: `TempoSubida`, `Overshoot`, `Undershoot` e `ErroRampa`.
+
+### `gráfico_plotly_coordParalelas.py`
+
+Gera uma primeira versão do gráfico de coordenadas paralelas usando `plotly.graph_objects.Parcoords`. Cada linha representa uma solução candidata e a escala de cor é associada ao valor de `Kp`. O script também salva o gráfico em HTML, PNG e gera um CSV auxiliar com os dados utilizados.
+
+### `plot_coordenadas_paralelas_com_legenda.py`
+
+Gera uma versão alternativa das coordenadas paralelas usando `go.Scatter`, criando uma curva individual para cada par `(Kp, Ki)`. Essa abordagem permite usar legenda interativa, ligar/desligar curvas individualmente e visualizar os valores reais dos indicadores ao passar o mouse sobre as curvas.
+
+### `plot_coordenadas_paralelas_slider.py`
+
+Gera o dashboard interativo final em Plotly. Esse script adiciona um slider de redução percentual dos limites de corte, permitindo filtrar visualmente as soluções candidatas. A cada aumento da redução percentual, curvas que não atendem aos critérios de `TempoSubida`, `Overshoot`, `Undershoot` e `ErroRampa` são ocultadas automaticamente. Esse processo foi usado para identificar as soluções mais robustas no trade-off final.
+
+### Arquivos HTML gerados
+
+Os arquivos `.html` salvos pelos scripts permitem abrir os gráficos diretamente no navegador, mantendo a interatividade do Plotly, como hover, legenda clicável, botões de mostrar/ocultar curvas e slider de filtragem. Esses arquivos foram usados para explorar visualmente as soluções antes da escolha final dos pares de ganhos.
+
+### Arquivos PNG gerados
+
+Os arquivos `.png` são versões estáticas dos gráficos e tabelas, usados para inclusão no relatório final. Eles registram visualmente as etapas principais da análise, como a tabela filtrada, as coordenadas paralelas e os cortes progressivos de 20%, 25% e 30%.
+
+### Dependências Python
+
+Para executar os scripts Python, foram utilizadas as bibliotecas `pandas`, `plotly` e `kaleido`. O `pandas` foi usado para leitura, limpeza e manipulação das tabelas em CSV; o `plotly` foi usado para gerar os gráficos interativos; e o `kaleido` foi usado para exportar os gráficos em formato PNG.
