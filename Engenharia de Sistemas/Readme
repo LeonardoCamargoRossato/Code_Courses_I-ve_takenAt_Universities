@@ -1,4 +1,4 @@
-# Descrição dos códigos
+#Descrição dos códigos
 
 Este repositório contém os scripts utilizados no Trabalho 3 da disciplina Engenharia de Sistemas, cujo objetivo foi analisar um controlador PI por meio de varredura paramétrica dos ganhos `Kp` e `Ki`, cálculo de indicadores de desempenho, filtragem multicritério, coordenadas paralelas e validação pelo critério de Kreisselmeier-Steinhäuser (KS).
 
