@@ -41,9 +41,11 @@ Content is grouped primarily by course or subject. Enter the relevant course dir
 
 **Tier B — Technical / Scientific Archive.** Useful as evidence of breadth and long-term engineering practice, while the Tier A repositories represent current product-oriented work.
 
-## Portfolio
+## Related Portfolios
 
 **Personal Technical Portfolio:** https://leonardocamargorossato.github.io/LCR-SolutionsArchitecture-IA-Quantum/#/
+
+**Cities Comparing Research Platform:** https://leonardocamargorossato.github.io/CitiesComparing_ResearchPlatform/
 
 ---
 
